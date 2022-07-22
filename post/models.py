@@ -58,10 +58,35 @@ class BusinessArea(models.Model):
         db_table = 'business_areas'
 
 
+class Apply(models.Model):
+    name = models.CharField(max_length=128)
+
+    class Meta:
+        db_table = "apply"
+
+    def __str__(self):
+        return self.name
+
+
 class JobPostActivity(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     job_post = models.ForeignKey(JobPost, on_delete=models.CASCADE, null=True)
     apply_date = models.DateTimeField(auto_now_add=True)
+    apply = models.ForeignKey(Apply, on_delete=models.SET_NULL, null=True)
 
     class Meta:
         db_table = "job_post_activity"
+
+
+class JobEvaluationsStatus(models.Model):
+    status = models.CharField(max_length=128)
+
+    class Meta:
+        db_table = "job_evaluation_status"
+
+
+class JobPostActivityLog(models.Model):
+    job_post_activity = models.ForeignKey(JobPostActivity, on_delete=models.SET_NULL, null=True)
+    Interviewer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+
+
